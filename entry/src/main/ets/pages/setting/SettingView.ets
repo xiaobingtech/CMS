@@ -4,12 +4,13 @@ import Want from '@ohos.app.ability.Want';
 import { URLDialog } from './URLDialog';
 import { efRcpClientApi } from '@yunkss/ef_rcp';
 import { preferences } from '@kit.ArkData';
+import { SourceModel } from '../../data/SourceModel';
 
 @Preview
 @Component
 export struct SettingView {
 
-  @State current_source: string = ''
+  @State current_source: SourceModel|null = null
 
   onCancel() {
     console.info('Callback when the first button is clicked')
@@ -74,7 +75,7 @@ export struct SettingView {
           Row(){
             Text('当前源')
             Blank()
-            Text(this.current_source)
+            Text(this.current_source?.name)
           }
           .width('100%')
           .height(44)
@@ -122,7 +123,7 @@ export struct SettingView {
     .title('设置')
     .onAppear(() => {
       let data = preferences.getPreferencesSync(getContext(this), { name: 'source.db' })
-      this.current_source = data.getSync('current', '') as string
+      this.current_source = data.getSync('current', '') as SourceModel
     })
   }
 

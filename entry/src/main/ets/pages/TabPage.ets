@@ -1,6 +1,7 @@
 import { preferences } from '@kit.ArkData'
 import { router } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../common/DerivedNavPathStack'
+import { SourceModel } from '../data/SourceModel'
 import { HomeView } from './home/HomeView'
 import { SettingView } from './setting/SettingView'
 
@@ -15,6 +16,13 @@ struct TabPage {
 
   aboutToAppear(): void {
     AppStorage.setOrCreate('derivedStack', this.derivedStack)
+
+    let data = preferences.getPreferencesSync(getContext(this), { name: 'source.db' })
+
+    let model = new SourceModel()
+    model.api = 'https://cj.lziapi.com/api.php/provide/vod/from/lzm3u8/'
+    model.name = '量子资源'
+    data.putSync('current', model)
   }
 
   @Builder
