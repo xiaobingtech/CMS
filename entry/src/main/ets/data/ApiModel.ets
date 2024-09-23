@@ -7,7 +7,6 @@ export class ApiModelList {
   vod_time: string = ''
   vod_remarks: string = ''
   vod_play_from: string = ''
-  vod_play_url: string = ''
 }
 
 export class ApiModelClas {

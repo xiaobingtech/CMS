@@ -3,6 +3,7 @@ import { router } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../common/DerivedNavPathStack'
 import { SourceModel } from '../data/SourceModel'
 import { HomeView } from './home/HomeView'
+import { VodDetailView } from './home/VodDetailView'
 import { SettingView } from './setting/SettingView'
 
 @Entry

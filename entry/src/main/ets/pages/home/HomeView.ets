@@ -111,21 +111,6 @@ export struct HomeView {
                     Blank()
                   }
                   .height(44)
-                  Grid(){
-                    ForEach(this.vodList.filter(v1 => v1.type_id == item.type_id), (item2: ApiModelList) => {
-                      GridItem(){
-                        Text(item2.vod_name)
-                          .height(44)
-                      }
-                    })
-                  }
-                  .columnsTemplate('1fr 1fr 1fr 1fr')
-                  .rowsTemplate('1fr')
-                  .columnsGap(10)
-                  .rowsGap(10)
-                  .width('100%')
-                  .height(120)
-                  .backgroundColor(0xFAEEE0)
                 }
               }
             }
