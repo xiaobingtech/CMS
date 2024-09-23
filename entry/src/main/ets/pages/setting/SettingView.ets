@@ -3,10 +3,13 @@ import fs from '@ohos.file.fs';
 import Want from '@ohos.app.ability.Want';
 import { URLDialog } from './URLDialog';
 import { efRcpClientApi } from '@yunkss/ef_rcp';
+import { preferences } from '@kit.ArkData';
 
 @Preview
 @Component
 export struct SettingView {
+
+  @State current_source: string = ''
 
   onCancel() {
     console.info('Callback when the first button is clicked')
@@ -66,46 +69,61 @@ export struct SettingView {
 
   build() {
     Navigation(){
-      Column(){
-        List(){
-          ListItem(){
-            Row(){
-              Text('添加源')
-            }
-            .width('100%')
-            .height(48)
-            .onClick(() => {
-              ActionSheet.show({ // 建议使用 this.getUIContest().showActionSheet()接口
-                title: '选择添加源的方式',
-                subtitle: '',
-                message: '',
-                autoCancel: false,
-                cancel: () => {
-
-                },
-                alignment: DialogAlignment.Bottom,
-                offset: { dx: 0, dy: -10 },
-                sheets: [
-                  {
-                    title: '从文件中导入',
-                    action: () => {
-                     this.selectFile()
-                    }
-                  },
-                  {
-                    title: '从URL下载',
-                    action: () => {
-                      this.dialogController?.open()
-                    }
-                  }
-                ]
-              })
-            })
+      Scroll(){
+        Column(){
+          Row(){
+            Text('当前源')
+            Blank()
+            Text(this.current_source)
           }
+          .width('100%')
+          .height(44)
+          .padding(15)
+          Divider()
+          Row(){
+            Text('添加源')
+            Blank()
+            SymbolGlyph($r('sys.symbol.chevron_right'))
+          }
+          .width('100%')
+          .height(44)
+          .padding(15)
+          .onClick(() => {
+            ActionSheet.show({ // 建议使用 this.getUIContest().showActionSheet()接口
+              title: '选择添加源的方式',
+              subtitle: '',
+              message: '',
+              autoCancel: false,
+              cancel: () => {
+
+              },
+              alignment: DialogAlignment.Bottom,
+              offset: { dx: 0, dy: -10 },
+              sheets: [
+                {
+                  title: '从文件中导入',
+                  action: () => {
+                    this.selectFile()
+                  }
+                },
+                {
+                  title: '从URL下载',
+                  action: () => {
+                    this.dialogController?.open()
+                  }
+                }
+              ]
+            })
+          })
+          Divider()
         }
       }
     }
     .title('设置')
+    .onAppear(() => {
+      let data = preferences.getPreferencesSync(getContext(this), { name: 'source.db' })
+      this.current_source = data.getSync('current', '') as string
+    })
   }
 
   selectFile() {
@@ -118,7 +136,7 @@ export struct SettingView {
           return;
         }
         console.info('DocumentViewPicker.select successfully, DocumentSelectResult uri: ' +
-        JSON.stringify(DocumentSelectResult));
+        JSON.stringify(DocumentSelectResult))
       });
     } catch (err) {
       console.error('DocumentViewPicker failed with err: ' + err);
