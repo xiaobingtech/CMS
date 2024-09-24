@@ -129,6 +129,9 @@ export struct HomeView {
                     }
                     .width('100%')
                     .height(44)
+                    .onClick(() => {
+                      this.derivedStack?.pushPath({name: 'VodListView', param: item})
+                    })
                     Grid(){
                       ForEach(this.clasList.filter(key => key.type_id == item.type_id)[0].list, (item2: VodDetailModelList) => {
                         GridItem(){

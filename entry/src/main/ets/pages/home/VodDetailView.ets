@@ -115,7 +115,7 @@ export struct VodDetailView {
     let value = this.episodes.length / 3
     let ext = this.episodes.length % 3
     let row = ext == 0 ? value : (value + 1)
-    return Math.min(row * 44 + (row - 1) * 15, 300)
+    return Math.min(row * 59, 300)
   }
 
   async getDetail() {

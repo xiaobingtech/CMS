@@ -9,6 +9,11 @@
       "name": "VideoView",
       "pageSourceFile": "src/main/ets/pages/home/VideoView.ets",
       "buildFunction": "VideoViewBuilder"
+    },
+    {
+      "name": "VodListView",
+      "pageSourceFile": "src/main/ets/pages/home/VodListView.ets",
+      "buildFunction": "VodListViewBuilder"
     }
   ]
 }
