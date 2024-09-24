@@ -5,23 +5,11 @@
 },
 {
 "name": "紅牛資源",
-"api": "https://www.hongniuzy2.com/api.php/provide/vod/from/hnm3u8/"
+"api": "https://www.hongniuzy2.com/api.php/provide/vod/"
 },
 {
 "name": "量子資源",
 "api": "https://cj.lziapi.com/api.php/provide/vod/"
-},
-{
-"name": "開放電影",
-"api": "https://vod-demo.onrender.com/pubdovod.php"
-},
-{
-"name": "优质资源库",
-"api": "https://api.1080zyku.com/inc/api.php/provide/vod/"
-},
-{
-"name": "39影視",
-"api": "https://www.39kan.com/api.php/provide/vod/"
 },
 {
 "name": "天堂资源",

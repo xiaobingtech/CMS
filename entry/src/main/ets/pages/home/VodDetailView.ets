@@ -2,6 +2,8 @@ import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { VodDetailModel, VodDetailModelList } from '../../data/VodDetailModel'
 import { promptAction } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
+import { preferences } from '@kit.ArkData'
+import { SourceModel } from '../../data/SourceModel'
 
 @Builder
 export function VodDetailViewBuilder(name: string, param: Object) {
@@ -11,74 +13,117 @@ export function VodDetailViewBuilder(name: string, param: Object) {
 @Preview
 @Component
 export struct VodDetailView {
+  @Builder
+  fromMenu() {
+    Menu() {
+      ForEach(this.play_from, (item: string) => {
+        MenuItem({ content: item })
+          .onChange((selected) => {
+            if (selected) {
+              this.playFromIndex = this.play_from.indexOf(item, 0)
+            }
+          })
+      })
+    }
+  }
+
+  @State play_from: string[] = []
+
+  @State playFromIndex: number = 0
+
   @State model: VodDetailModelList|undefined = undefined
   @State episodes: Episode[] = []
+  @State vod_id: string|null = null
 
   private derivedStack: DerivedNavPathStack | null = null
 
+  scroller: Scroller = new Scroller()
+
+  @State loading: boolean = true
+
   build() {
     NavDestination(){
-      Scroll(){
-        Column(){
-          Stack(){
+      if (this.loading) {
+        LoadingProgress()
+          .width(100)
+          .height('100%')
+      }else{
+        Scroll(){
+          Column(){
             Image(this.model?.vod_pic)
               .width('100%')
-              .height(200)
-          }
-          Text(this.model?.vod_name)
-            .fontSize(18)
-          Text(this.model?.vod_sub)
-            .fontSize(15)
-          // Text(this.model?.vod_content)
-          //   .fontSize(13)
-          Tabs(){
-            ForEach(this.model?.vod_play_from.split('$$$'), (item: string) => {
-              TabContent(){
-                Grid(){
-                  ForEach(this.episodes, (item: Episode) => {
-                    GridItem(){
-                      Text(item.title)
-                        .borderWidth(1)
-                        .borderRadius(5)
-                        .borderColor(Color.Gray)
-                        .padding(15)
-                        .width('100%')
-                        .height('100%')
-                    }
-                    .onClick(() => {
-                      this.derivedStack?.pushPath({name: 'VideoView', param: item.url})
-                    })
-                  })
+              .height(300)
+            Row({space: 15}){
+              Text('切换线路')
+                .fontSize(15)
+              Text(this.play_from[this.playFromIndex])
+                .bindMenu(this.fromMenu())
+                .fontSize(15)
+            }
+            .height(44)
+            Grid(this.scroller){
+              ForEach(this.episodes, (item: Episode) => {
+                GridItem(){
+                  Text(item.title)
+                    .borderWidth(1)
+                    .borderRadius(5)
+                    .borderColor(Color.Gray)
+                    .padding(15)
+                    .width('100%')
+                    .height('100%')
+                    .textAlign(TextAlign.Center)
                 }
-                .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
-                .rowsTemplate('1fr 1fr 1fr 1fr 1fr')
                 .width('100%')
-                .backgroundColor(0xFAEEE0)
-              }
-              .tabBar(item)
-            })
+                .height(44)
+                .onClick(() => {
+                  this.derivedStack?.pushPath({name: 'VideoView', param: this.playFromIndex == 0 ? item.url1 : item.url2})
+                })
+              })
+            }
+            .columnsTemplate('1fr 1fr 1fr')
+            .columnsGap(15)
+            .rowsGap(15)
+            .width('100%')
+            .height(this.loading ? 0 : this.getEpHeight())
+            .backgroundColor(0xFAEEE0)
+            .enableScrollInteraction(true)
+            .supportAnimation(false)
+            .multiSelectable(false)
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.On)
+            .scrollBarColor(Color.Grey)
+            .scrollBarWidth(4)
           }
           .width('100%')
+          .height('100%')
         }
         .width('100%')
         .height('100%')
       }
-      .width('100%')
-      .height('100%')
     }
-    .title('视频详情')
+    .title(this.model?.vod_name)
     .onReady((callBack) => {
       this.derivedStack = callBack.pathStack as DerivedNavPathStack
+      this.vod_id = callBack.pathInfo.param as string
     })
     .onAppear(() => {
       this.getDetail()
     })
   }
 
+  getEpHeight(): number {
+    let value = this.episodes.length / 3
+    let ext = this.episodes.length % 3
+    let row = ext == 0 ? value : (value + 1)
+    return Math.min(row * 44 + (row - 1) * 15, 300)
+  }
+
   async getDetail() {
-    // https://cj.lziapi.com/api.php/provide/vod/?ac=detail&ids=93988
+    let data = preferences.getPreferencesSync(getContext(this), { name: 'source.db' })
+    let current_source = data.getSync('current', '') as SourceModel
+
     let response = await efRcpClientApi.get<VodDetailModel>({
-      url: "https://cj.lziapi.com/api.php/provide/vod/?ac=detail&ids=93988"
+      url: `${current_source.api}?ac=detail&ids=${this.vod_id}`
     })
     if (response.error) {
       promptAction.showToast({
@@ -89,6 +134,10 @@ export struct VodDetailView {
     this.model = response.data?.list[0]
 
     this.episodes = this.parseStringToJson(this.model?.vod_play_url)
+
+    this.play_from = this.model?.vod_play_from.split('$$$')!
+
+    this.loading = false
   }
 
   parseStringToJson(input: string|undefined): Episode[] {
@@ -117,7 +166,8 @@ export struct VodDetailView {
 
       episodes.push({
         title: part1[0],
-        url: part2[1]
+        url1: part1[1],
+        url2: part2[1]
       });
     }
 
@@ -127,5 +177,6 @@ export struct VodDetailView {
 
 interface Episode {
   title: string;
-  url: string;
+  url1: string;
+  url2: string;
 }

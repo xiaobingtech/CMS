@@ -1,3 +1,5 @@
+import { VodDetailModelList } from './VodDetailModel'
+
 export class ApiModelList {
   vod_id: number = 0
   vod_name: string = ''
@@ -13,6 +15,7 @@ export class ApiModelClas {
   type_id: number = 0
   type_pid: number = 0
   type_name: string = ''
+  list: VodDetailModelList[] = []
 }
 
 export class ApiModel {
