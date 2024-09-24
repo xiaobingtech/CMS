@@ -5,12 +5,19 @@ import { URLDialog } from './URLDialog';
 import { efRcpClientApi } from '@yunkss/ef_rcp';
 import { preferences } from '@kit.ArkData';
 import { SourceModel } from '../../data/SourceModel';
+import { DerivedNavPathStack } from '../../common/DerivedNavPathStack';
 
 @Preview
 @Component
 export struct SettingView {
 
   @State current_source: SourceModel|null = null
+
+  private derivedStack: DerivedNavPathStack | null = null
+
+  aboutToAppear(): void {
+    this.derivedStack = AppStorage.get('derivedStack') as DerivedNavPathStack
+  }
 
   onCancel() {
     console.info('Callback when the first button is clicked')

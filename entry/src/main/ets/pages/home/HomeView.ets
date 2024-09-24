@@ -3,6 +3,7 @@ import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { ApiModel, ApiModelClas, ApiModelList } from '../../data/ApiModel'
 import { SourceModel } from '../../data/SourceModel'
 import { promptAction } from '@kit.ArkUI'
+import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
 
 class MyDataSource implements IDataSource {
   private list: number[] = []
@@ -30,6 +31,8 @@ class MyDataSource implements IDataSource {
 @Preview
 @Component
 export struct HomeView {
+  private derivedStack: DerivedNavPathStack | null = null
+
   @State current_source: SourceModel|null = null
   @State clasList: ApiModelClas[] = []
   @State vodList: ApiModelList[] = []
@@ -46,6 +49,7 @@ export struct HomeView {
       list.push(i);
     }
     this.data = new MyDataSource(list)
+    this.derivedStack = AppStorage.get('derivedStack') as DerivedNavPathStack
   }
 
   @State isStop: boolean = false
@@ -110,10 +114,16 @@ export struct HomeView {
                     Text(item.type_name)
                     Blank()
                   }
-                  .height(44)
+                  .width('100%')
+                  .height('100%')
                 }
+                .width('100%')
+                .height(44)
               }
             }
+            .onClick(() => {
+              this.derivedStack?.pushPath({name: 'VodDetailView'})
+            })
           }, (item: ApiModelClas) => item.type_id.toString())
         }
         .scrollBar(BarState.Off)
