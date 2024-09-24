@@ -4,6 +4,8 @@ import { DerivedNavPathStack } from '../common/DerivedNavPathStack'
 import { SourceModel } from '../data/SourceModel'
 import { HomeView } from './home/HomeView'
 import { VodDetailView } from './home/VodDetailView'
+import { HotView } from './hot/HotView'
+import { SearchView } from './search/SearchView'
 import { SettingView } from './setting/SettingView'
 
 @Entry
@@ -52,11 +54,18 @@ struct TabPage {
           HomeView()
         }
         .tabBar(this.tabBarBuilder(0, '首页', 'sys.symbol.square_grid_2x2', 'sys.symbol.square_fill_grid_2x2'))
-
+        TabContent() {
+          HotView()
+        }
+        .tabBar(this.tabBarBuilder(1, '热门', 'sys.symbol.discover_fill', 'sys.symbol.discover_fill'))
+        TabContent() {
+          SearchView()
+        }
+        .tabBar(this.tabBarBuilder(1, '搜索', 'sys.symbol.magnifyingglass', 'sys.symbol.magnifyingglass'))
         TabContent() {
           SettingView()
         }
-        .tabBar(this.tabBarBuilder(4, '设置', 'sys.symbol.person_crop_circle_fill_1', 'sys.symbol.person_crop_circle_fill_1'))
+        .tabBar(this.tabBarBuilder(2, '设置', 'sys.symbol.person_crop_circle_fill_1', 'sys.symbol.person_crop_circle_fill_1'))
       }
       .onChange((index: number) => {
         this.selectIndex = index

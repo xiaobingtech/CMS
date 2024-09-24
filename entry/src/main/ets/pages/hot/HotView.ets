@@ -5,23 +5,17 @@ import { VodDetailModel, VodDetailModelList } from '../../data/VodDetailModel'
 import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
 import { ApiModelClas } from '../../data/ApiModel'
-
-@Builder
-export function VodListViewBuilder(name: string, param: Object) {
-  VodListView()
-}
+import { DBHotModel } from '../../data/DBHotModel'
 
 @Preview
 @Component
-struct VodListView {
+export struct HotView {
 
   @State page: number = 1
 
   @State loading: boolean = true
-  private derivedStack: DerivedNavPathStack | null = null
 
-  @State t: ApiModelClas|null = null
-  @State model: VodDetailModel|null = null
+  @State model: DBHotModel|null = null
 
   scroller: Scroller = new Scroller()
   build() {
@@ -33,7 +27,7 @@ struct VodListView {
       }else{
         Column(){
           Grid(this.scroller){
-            ForEach(this.model?.list, (item: VodDetailModelList) => {
+            ForEach(this.model?.subjects, (item: VodDetailModelList) => {
               GridItem(){
                 Column({space: 5}){
                   Image(item.vod_pic)
@@ -47,7 +41,7 @@ struct VodListView {
                 }
               }
               .onClick(() => {
-                this.derivedStack?.pushPath({name: 'VodDetailView', param: item.vod_id})
+
               })
             })
           }
@@ -71,11 +65,6 @@ struct VodListView {
         }
       }
     }
-    .title(this.t?.type_name)
-    .onReady((callBack) => {
-      this.derivedStack = callBack.pathStack as DerivedNavPathStack
-      this.t = callBack.pathInfo.param as ApiModelClas
-    })
     .onAppear(() => {
       this.headerRefresh()
     })
@@ -92,7 +81,7 @@ struct VodListView {
   }
 
   getRow(): number {
-    let count = this.model?.list.length!
+    let count = this.model?.subjects.length!
     let value = count / 4
     let ext = count % 4
     return ext == 0 ? value : value + 1
@@ -102,8 +91,8 @@ struct VodListView {
     let data = preferences.getPreferencesSync(getContext(this), { name: 'source.db' })
     let current_source = data.getSync('current', '') as SourceModel
 
-    let response = await efRcpClientApi.get<VodDetailModel>({
-      url: `${current_source.api}?ac=detail&t=${this.t?.type_id}&pg=${this.page}`
+    let response = await efRcpClientApi.get<DBHotModel>({
+      url: `https://movie.douban.com/j/search_subjects?type=tv&tag=%E7%83%AD%E9%97%A8&page_limit=10&page_start=0`
     })
     if (response.error) {
       promptAction.showToast({
@@ -115,7 +104,7 @@ struct VodListView {
       this.loading = false
       this.model = response.data!
     }else{
-      this.model?.list.push(...response.data?.list ?? [])
+      this.model?.subjects.push(...response.data?.subjects ?? [])
     }
   }
 }
