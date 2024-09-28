@@ -85,7 +85,6 @@ export struct VodDetailView {
             .rowsGap(15)
             .width('100%')
             .height(this.loading ? 0 : this.getEpHeight())
-            .backgroundColor(0xFAEEE0)
             .enableScrollInteraction(true)
             .supportAnimation(false)
             .multiSelectable(false)
