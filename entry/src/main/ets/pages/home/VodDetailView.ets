@@ -1,6 +1,6 @@
 import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { VodDetailModel, VodDetailModelList } from '../../data/VodDetailModel'
-import { promptAction } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
 import { preferences } from '@kit.ArkData'
 import { SourceModel } from '../../data/SourceModel'
@@ -76,7 +76,14 @@ export struct VodDetailView {
                 .width('100%')
                 .height(44)
                 .onClick(() => {
-                  this.derivedStack?.pushPath({name: 'VideoView', param: this.playFromIndex == 0 ? item.url1 : item.url2})
+                  // this.derivedStack?.pushPath({name: 'VideoView', param: this.playFromIndex == 0 ? item.url1 : item.url2})
+                  console.log('item.url1:'+item.url1)
+                  console.log('item.url2:'+item.url2)
+                  router.pushUrl({
+                    url: "pages/player/IjkVideoPlayerPage", params: {
+                      videoUrl: this.playFromIndex == 0 ? item.url1 : item.url2
+                    }
+                  });
                 })
               })
             }

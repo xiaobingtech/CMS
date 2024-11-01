@@ -2,7 +2,7 @@ import { preferences } from '@kit.ArkData'
 import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { ApiModel, ApiModelClas, ApiModelList } from '../../data/ApiModel'
 import { SourceModel } from '../../data/SourceModel'
-import { promptAction } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
 import { VodDetailModel, VodDetailModelList } from '../../data/VodDetailModel'
 

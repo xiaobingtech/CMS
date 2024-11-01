@@ -2,7 +2,8 @@
   "modelVersion": "5.0.0",
   "description": "Please describe the basic information.",
   "dependencies": {
-    "@yunkss/ef_rcp": "^1.0.3"
+    "@yunkss/ef_rcp": "^1.0.3",
+    "@ohos/ijkplayer": "^2.0.5"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.19",

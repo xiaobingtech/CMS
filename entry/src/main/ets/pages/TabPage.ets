@@ -61,11 +61,11 @@ struct TabPage {
         TabContent() {
           SearchView()
         }
-        .tabBar(this.tabBarBuilder(1, '搜索', 'sys.symbol.magnifyingglass', 'sys.symbol.magnifyingglass'))
+        .tabBar(this.tabBarBuilder(2, '搜索', 'sys.symbol.magnifyingglass', 'sys.symbol.magnifyingglass'))
         TabContent() {
           SettingView()
         }
-        .tabBar(this.tabBarBuilder(2, '设置', 'sys.symbol.person_crop_circle_fill_1', 'sys.symbol.person_crop_circle_fill_1'))
+        .tabBar(this.tabBarBuilder(3, '设置', 'sys.symbol.person_crop_circle_fill_1', 'sys.symbol.person_crop_circle_fill_1'))
       }
       .onChange((index: number) => {
         this.selectIndex = index

@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/IndexPage",
-    "pages/TabPage"
+    "pages/TabPage",
+    "pages/player/IjkVideoPlayerPage"
   ]
 }
