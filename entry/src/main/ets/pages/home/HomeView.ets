@@ -108,6 +108,7 @@ export struct HomeView {
                   .columnsGap(15)
                   .width('100%')
                   .height(this.loading ? 0 : 150)
+                  .padding({left: 15, right: 15})
                 }
                 .width('100%')
                 .height(194)

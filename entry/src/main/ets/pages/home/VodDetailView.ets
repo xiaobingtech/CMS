@@ -99,6 +99,7 @@ export struct VodDetailView {
             .scrollBar(BarState.On)
             .scrollBarColor(Color.Grey)
             .scrollBarWidth(4)
+            .padding({left: 15, right: 15})
           }
           .width('100%')
           .height('100%')
