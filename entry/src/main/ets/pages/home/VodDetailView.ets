@@ -129,7 +129,7 @@ export struct VodDetailView {
     let current_source = data.getSync('current', '') as SourceModel
 
     let response = await efRcpClientApi.get<VodDetailModel>({
-      url: `${current_source.api}?ac=detail&ids=${this.vod_id}`
+      url: `${current_source.api}/api.php/provide/vod/?ac=detail&ids=${this.vod_id}`
     })
     if (response.error) {
       promptAction.showToast({

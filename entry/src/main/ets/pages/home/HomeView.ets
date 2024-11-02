@@ -130,7 +130,7 @@ export struct HomeView {
       let current_source = data.getSync('current', '') as SourceModel
       this.current_source = current_source
       let response = await efRcpClientApi.get<ApiModel>({
-        url: this.current_source.api
+        url: this.current_source.api + '/api.php/provide/vod/?ac=list'
       })
       if (response.error) {
         promptAction.showToast({
@@ -146,7 +146,7 @@ export struct HomeView {
 
       this.clasList.forEach(async (item, index) => {
         let response2 = await efRcpClientApi.get<VodDetailModel>({
-          url: current_source.api + `?ac=detail&t=${item.type_id}`
+          url: current_source.api + `/api.php/provide/vod/?ac=detail&t=${item.type_id}`
         })
         this.count ++
         if (this.count == result!.class.length) {
