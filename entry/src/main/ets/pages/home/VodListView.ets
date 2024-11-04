@@ -62,6 +62,7 @@ struct VodListView {
           .scrollBar(BarState.On)
           .scrollBarColor(Color.Grey)
           .scrollBarWidth(4)
+          .padding({left: 15, right: 15})
           .onReachEnd(() => {
             this.footerRefresh()
           })
