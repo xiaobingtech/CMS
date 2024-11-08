@@ -35,6 +35,14 @@
           ]
         }
       ]
+    },
+    {
+      "name": "videoDetail",
+      "srcPath": "./videoDetail"
+    },
+    {
+      "name": "videoPlayer",
+      "srcPath": "./videoPlayer"
     }
   ]
 }

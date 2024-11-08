@@ -1,6 +1,6 @@
 import { efRcpClientApi } from '@yunkss/ef_rcp'
 import { VodDetailModel, VodDetailModelList } from '../../data/VodDetailModel'
-import { promptAction, router } from '@kit.ArkUI'
+import { display, promptAction, router } from '@kit.ArkUI'
 import { DerivedNavPathStack } from '../../common/DerivedNavPathStack'
 import { preferences } from '@kit.ArkData'
 import { SourceModel } from '../../data/SourceModel'
@@ -61,45 +61,45 @@ export struct VodDetailView {
                 .fontSize(15)
             }
             .height(44)
-            Grid(this.scroller){
-              ForEach(this.episodes, (item: Episode) => {
-                GridItem(){
-                  Text(item.title)
-                    .borderWidth(1)
-                    .borderRadius(5)
-                    .borderColor(Color.Gray)
-                    .padding(15)
-                    .width('100%')
-                    .height('100%')
-                    .textAlign(TextAlign.Center)
-                }
-                .width('100%')
-                .height(44)
-                .onClick(() => {
-                  // this.derivedStack?.pushPath({name: 'VideoView', param: this.playFromIndex == 0 ? item.url1 : item.url2})
-                  console.log('item.url1:'+item.url1)
-                  console.log('item.url2:'+item.url2)
-                  router.pushUrl({
-                    url: "pages/player/IjkVideoPlayerPage", params: {
-                      videoUrl: this.playFromIndex == 0 ? item.url1 : item.url2
-                    }
-                  });
-                })
-              })
-            }
-            .columnsTemplate('1fr 1fr 1fr')
-            .columnsGap(15)
-            .rowsGap(15)
-            .width('100%')
-            .height(this.loading ? 0 : this.getEpHeight())
-            .enableScrollInteraction(true)
-            .supportAnimation(false)
-            .multiSelectable(false)
-            .edgeEffect(EdgeEffect.Spring)
-            .scrollBar(BarState.On)
-            .scrollBarColor(Color.Grey)
-            .scrollBarWidth(4)
-            .padding({left: 15, right: 15})
+            // Grid(this.scroller){
+            //   ForEach(this.episodes, (item: Episode) => {
+            //     GridItem(){
+            //       Text(item.title)
+            //         .borderWidth(1)
+            //         .borderRadius(5)
+            //         .borderColor(Color.Gray)
+            //         .padding(15)
+            //         .width('100%')
+            //         .height('100%')
+            //         .textAlign(TextAlign.Center)
+            //     }
+            //     .width('100%')
+            //     .height(44)
+            //     .onClick(() => {
+            //       // this.derivedStack?.pushPath({name: 'VideoView', param: this.playFromIndex == 0 ? item.url1 : item.url2})
+            //       console.log('item.url1:'+item.url1)
+            //       console.log('item.url2:'+item.url2)
+            //       router.pushUrl({
+            //         url: "pages/player/IjkVideoPlayerPage", params: {
+            //           videoUrl: this.playFromIndex == 0 ? item.url1 : item.url2
+            //         }
+            //       });
+            //     })
+            //   })
+            // }
+            // .columnsTemplate('1fr 1fr 1fr')
+            // .columnsGap(15)
+            // .rowsGap(15)
+            // .width('100%')
+            // .height(this.loading ? 0 : this.getEpHeight())
+            // .enableScrollInteraction(true)
+            // .supportAnimation(false)
+            // .multiSelectable(false)
+            // .edgeEffect(EdgeEffect.Spring)
+            // .scrollBar(BarState.On)
+            // .scrollBarColor(Color.Grey)
+            // .scrollBarWidth(4)
+            // .padding({left: 15, right: 15})
           }
           .width('100%')
           .height('100%')
